@@ -18,21 +18,24 @@ class Detective(Node):
         
         self.declare_parameter('real_life', False)
         self.declare_parameter('odom_topics', ['/odom_matcher', '/odometry/filtered'])
+        self.declare_parameter('world_name', 'demo_world')
         
         self.real_life = self.get_parameter('real_life').get_parameter_value().bool_value
         self.odom_topics = self.get_parameter('odom_topics').get_parameter_value().string_array_value
+        self.world_name = self.get_parameter('world_name').get_parameter_value().string_value
         
         self.odom_data = {topic: {'x': [], 'y': [], 'start_x': None, 'start_y': None} for topic in self.odom_topics}
-        self.ground_truth = {'x': [], 'y': [], 'vx': [], 'vy': [], 'start_x': None, 'start_y': None}
+        self.ground_truth = {'x': [], 'y': [], 'start_x': None, 'start_y': None}
         self.errors = {topic: [] for topic in self.odom_topics}
                 
         for topic in self.odom_topics:
             self.create_subscription(Odometry, topic, self.odom_callback(topic), 10)
             
         if not self.real_life:
+            ground_truth_topic = f'/world/{self.world_name}/dynamic_pose/info'
             self.model_states_subscriber = self.create_subscription(
                 TFMessage,
-                '/world/demo_world/dynamic_pose/info',
+                ground_truth_topic,
                 self.model_states_callback,
                 10
             )
