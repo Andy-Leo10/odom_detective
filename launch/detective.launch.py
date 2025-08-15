@@ -39,7 +39,8 @@ def generate_launch_description():
         executable='detective_node',
         parameters=[{
             'real_life': LaunchConfiguration('real_life'),
-            'odom_topics': LaunchConfiguration('odom_topics')
+            'odom_topics': LaunchConfiguration('odom_topics'),
+            'world_name': LaunchConfiguration('world_name'),
         }],
         output='screen'
     )
