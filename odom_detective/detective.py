@@ -8,7 +8,6 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from tf2_msgs.msg import TFMessage
-from rclpy.executors import MultiThreadedExecutor
 import matplotlib.pyplot as plt
 import numpy as np
 
