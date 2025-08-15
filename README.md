@@ -3,8 +3,8 @@
 This pkg subscribes to odometry sources and plot them in real-time using matplotlib. The `ground truth` needs to be bridge from Ignition Gazebo to ROS2.
 
 ## Usage
-Compile and source the package:
-
+- Compile and source the package
+- Use run or launch commands to start the node and analize your odometry data
 ```
 ros2 run odom_detective detective_node --ros-args -p odom_topics:='["/odometry/filtered", "/odom_matcher"]'
 ros2 launch odom_detective detective.launch.py odom_topics:='["/odometry/filtered", "/odom_matcher"]'
@@ -12,8 +12,8 @@ ros2 launch odom_detective detective.launch.py odom_topics:='["/odometry/filtere
 
 ## Current Results
 
-The Odometry History is OK, but the Odometry Error are WRONG
-![alt text](pictures/history_ok.png)
+The Odometry History is OK, and the Odometry Error is OK
+![alt text](pictures/odom_detective.png)
 
 ## Notes
 Is important to check the name of the Ignition world. The bridge is done by the launch file, but the world needs to be specified correctly.

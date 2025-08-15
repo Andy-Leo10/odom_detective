@@ -84,15 +84,18 @@ class Detective(Node):
                 self.ground_truth['y'].append(y - self.ground_truth['start_y'])
                 
     def calculate_errors(self):
+        window_size = 30  # Number of recent points to consider for error calculation (Sliding window)
         if self.ground_truth['x']:
             for topic in self.odom_topics:
                 if self.odom_data[topic]['x']:
                     # Ensure both arrays have the same length
                     min_length = min(len(self.odom_data[topic]['x']), len(self.ground_truth['x']))
-                    odom_x = np.array(self.odom_data[topic]['x'][:min_length])
-                    odom_y = np.array(self.odom_data[topic]['y'][:min_length])
-                    ground_truth_x = np.array(self.ground_truth['x'][:min_length])
-                    ground_truth_y = np.array(self.ground_truth['y'][:min_length])
+                    start_index = max(0, min_length - window_size)  # Start of the sliding window
+                    
+                    odom_x = np.array(self.odom_data[topic]['x'][start_index:min_length])
+                    odom_y = np.array(self.odom_data[topic]['y'][start_index:min_length])
+                    ground_truth_x = np.array(self.ground_truth['x'][start_index:min_length])
+                    ground_truth_y = np.array(self.ground_truth['y'][start_index:min_length])
                     
                     # Calculate error
                     error = np.sqrt((odom_x - ground_truth_x)**2 + (odom_y - ground_truth_y)**2)
