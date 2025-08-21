@@ -43,14 +43,14 @@ class Detective(Node):
         plt.ion()
         if not self.real_life:
             self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(12, 5))
-            self.ax2.set_xlabel('Time')
-            self.ax2.set_ylabel('Error')
+            self.ax2.set_xlabel('Time [s]')
+            self.ax2.set_ylabel('Error [m]')
             self.ax2.set_title('Odometry Error')
         else:
             self.fig, self.ax1 = plt.subplots(figsize=(6, 5))
             
-        self.ax1.set_xlabel('X')
-        self.ax1.set_ylabel('Y')
+        self.ax1.set_xlabel('X [m]')
+        self.ax1.set_ylabel('Y [m]')
         self.ax1.set_title('Odometry History')
         
         plt.show()
@@ -83,7 +83,7 @@ class Detective(Node):
                 self.ground_truth['y'].append(y - self.ground_truth['start_y'])
                 
     def calculate_errors(self):
-        window_size = 30  # Number of recent points to consider for error calculation (Sliding window)
+        window_size = 1  # Number of recent points to consider for error calculation (Sliding window)
         if self.ground_truth['x']:
             for topic in self.odom_topics:
                 if self.odom_data[topic]['x']:
@@ -103,8 +103,8 @@ class Detective(Node):
     def update_plot(self):
         self.ax1.clear()
         
-        self.ax1.set_xlabel('X')
-        self.ax1.set_ylabel('Y')
+        self.ax1.set_xlabel('X [m]')
+        self.ax1.set_ylabel('Y [m]')
         self.ax1.set_title('Odometry History')
         
         for topic in self.odom_topics:
@@ -115,8 +115,8 @@ class Detective(Node):
             self.ax1.plot(self.ground_truth['x'], self.ground_truth['y'], label='Ground Truth')
             
             self.ax2.clear()
-            self.ax2.set_xlabel('Time')
-            self.ax2.set_ylabel('Error')
+            self.ax2.set_xlabel('Time [s]')
+            self.ax2.set_ylabel('Error [m]')
             self.ax2.set_title('Odometry Error')
             for topic in self.odom_topics:
                 if self.errors[topic]:
